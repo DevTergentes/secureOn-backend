@@ -1,0 +1,52 @@
+package com.secureon.controller;
+
+import com.secureon.domain.model.Incident;
+import com.secureon.service.IncidentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@Tag(name = "Incidents", description = "Incidents Management Endpoints")
+@RequestMapping("/api/secureon/v1/incidents")
+public class IncidentController {
+
+    @Autowired
+    private IncidentService incidentService;
+
+    @GetMapping
+    public ResponseEntity<List<Incident>> getAllIncidents() {
+        return new ResponseEntity<>(incidentService.getAllIncidents(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Incident> getIncidentById(@PathVariable Long id) {
+        return incidentService.findById(id)
+                .map(incident -> new ResponseEntity<>(incident, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping
+    public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
+        return new ResponseEntity<>(incidentService.createIncident(incident), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteIncident(@PathVariable Long id) {
+        incidentService.deleteIncident(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/delivery/{deliveryId}")
+    public ResponseEntity<List<Incident>> getIncidentsByDeliveryId(@PathVariable Long deliveryId) {
+        List<Incident> incidents = incidentService.findIncidentsByDeliveryId(deliveryId);
+        if (incidents.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(incidents, HttpStatus.OK);
+    }
+}
