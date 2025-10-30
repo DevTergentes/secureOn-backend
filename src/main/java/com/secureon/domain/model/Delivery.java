@@ -46,4 +46,7 @@ public class Delivery {
 
     @Column(name= "owner_id", nullable = false)
     private Long ownerId;
+
+    @Column(name= "sensor_id", nullable = false)
+    private String sensorId;
 }
