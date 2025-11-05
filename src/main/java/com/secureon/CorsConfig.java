@@ -1,11 +1,14 @@
 package com.secureon;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Configuration class for Cross-Origin Resource Sharing (CORS) in the GreenGrow backend application.
+ * Configuration class for Cross-Origin Resource Sharing (CORS) in the GreenGrow
+ * backend application.
+ * 
  * @author GrowGenius
  * @version 1.0 19/11/2023
  */
@@ -21,10 +24,10 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")           // Permite cualquier origen
-                .allowedMethods("*")           // Permite cualquier método (GET, POST, PUT, DELETE, OPTIONS, etc)
-                .allowedHeaders("*")           // Permite cualquier header
-                .allowCredentials(false)       // No permite credenciales cuando origins="*"
+                .allowedOriginPatterns("*") // Permite cualquier origen (incluye HTTPS)
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(false)
                 .maxAge(3600);
     }
 }
