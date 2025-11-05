@@ -45,6 +45,13 @@ public class RecordLog {
     @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
+    @PrePersist
+    protected void onCreate() {
+        if (timestamp == null) {
+            timestamp = LocalDateTime.now();
+        }
+    }
+
 
     public String generateDescription(String place, Device sensor, InputDataSensor inputDataSensor) {
         String sensorValidation = ValidateSensorStrategyImplements.validateSensor(inputDataSensor);

@@ -34,12 +34,16 @@ public class RecordController {
     }
 
     @PostMapping
-    public ResponseEntity<RecordLog> createRecord(@RequestBody RecordLog recordLog) {
+    public ResponseEntity<?> createRecord(@RequestBody RecordLog recordLog) {
         try {
             RecordLog saved = recordService.createRecord(recordLog);
             return new ResponseEntity<>(saved, HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            System.out.println("[ERROR] Error en createRecord: " + e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Error: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
