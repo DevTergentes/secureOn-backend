@@ -101,7 +101,12 @@ public class RecordServiceImpl implements RecordService {
             System.out.println("Lugar del incidente: " + place);
 
             String description = record.generateDescription(place, sensor, inputDataSensor);
-            System.out.println("Descripción de incidente: " + description);
+            System.out.println("Descripción de incidente (length: " + description.length() + "): " + description);
+
+            // limitar el lugar del incidente si es demasiado largo (max 255 caracteres)
+            String shortPlace = place != null && place.length() > 255
+                    ? place.substring(0, 252) + "..."
+                    : place;
 
             // establecer timestamp si es null para el incidente
             LocalDateTime incidentDate = record.getTimestamp() != null
@@ -109,7 +114,7 @@ public class RecordServiceImpl implements RecordService {
                     : LocalDateTime.now();
 
             Incident incident = Incident.builder()
-                    .incidentPlace(place)
+                    .incidentPlace(shortPlace != null ? shortPlace : "Unknown location")
                     .date(incidentDate)
                     .description(description)
                     .serviceId(delivery.get().getId())
