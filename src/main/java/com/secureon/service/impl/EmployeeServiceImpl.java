@@ -28,4 +28,9 @@ public class EmployeeServiceImpl  implements EmployeeService {
     public List<Employee> getUserById(Long id) {
         return employeeRepository.findAllByUserId(id);
     }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(id);
+    }
 }
