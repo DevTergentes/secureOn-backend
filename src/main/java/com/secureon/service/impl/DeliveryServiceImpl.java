@@ -3,6 +3,7 @@ package com.secureon.service.impl;
 import com.secureon.domain.model.Delivery;
 import com.secureon.domain.model.valueobjects.DeliveryState;
 import com.secureon.repository.DeliveryRepository;
+import com.secureon.repository.SensorRepository;
 import com.secureon.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Autowired
     private DeliveryRepository deliveryRepository;
 
+    @Autowired
+    private SensorRepository sensorRepository;
+
     @Override
     public List<Delivery> getAllDeliveries() {
         return deliveryRepository.findAll();
@@ -24,6 +28,12 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public Delivery createDelivery(Delivery delivery) {
         delivery.setState(DeliveryState.PENDING);
+
+        if (delivery.getSensorId() != null) {
+            sensorRepository.findById(delivery.getSensorId())
+                    .orElseThrow(() -> new RuntimeException("Sensor not found with id: " + delivery.getSensorId()));
+        }
+
         return deliveryRepository.save(delivery);
     }
 
@@ -76,7 +86,6 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryRepository.findAllByState(deliveryState);
 
     }
-
 
     @Override
     public List<Delivery> findByEmployeeId(Long employeeId) {

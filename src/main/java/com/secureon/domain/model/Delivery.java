@@ -1,4 +1,5 @@
 package com.secureon.domain.model;
+
 import com.secureon.domain.model.valueobjects.DeliveryState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="deliveries")
+@Table(name = "deliveries")
 public class Delivery {
 
     @Id
@@ -36,7 +37,6 @@ public class Delivery {
     @Column(name = "combustible_type", nullable = false)
     private String combustibleType;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private DeliveryState state;
@@ -44,6 +44,9 @@ public class Delivery {
     @Column(name = "employee_id")
     private Long employeeId;
 
-    @Column(name= "owner_id", nullable = false)
+    @Column(name = "owner_id", nullable = false)
     private Long ownerId;
+
+    @Column(name = "sensor_id")
+    private Long sensorId;
 }
